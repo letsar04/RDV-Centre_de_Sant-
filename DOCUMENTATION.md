@@ -154,7 +154,7 @@ npx react-native run-ios
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=votre_mot_de_passe
-DB_NAME=rdvsante
+DB_NAME=centre_sante
 
 # JWT
 JWT_SECRET=votre_secret_jwt_tres_long_et_securise
@@ -331,6 +331,39 @@ Authorization: Bearer <token>
   }
 }
 ```
+
+#### POST /auth/admin/create
+Créer un compte administrateur (développement/déploiement)
+
+**Body:**
+```json
+{
+  "first_name": "Admin",
+  "last_name": "System",
+  "email": "admin@system.com",
+  "phone": "0123456789",
+  "password": "adminpassword123"
+}
+```
+
+**Response:**
+```json
+{
+  "message": "Admin créé avec succès.",
+  "admin": {
+    "id": 2,
+    "first_name": "Admin",
+    "last_name": "System",
+    "email": "admin@system.com",
+    "role": "admin"
+  }
+}
+```
+
+**Notes:**
+- Cet endpoint est destiné au développement et déploiement initial
+- En production, il devrait être protégé ou désactivé
+- Ne nécessite pas d'authentification
 
 ### Médecins (/api/doctors)
 
@@ -530,10 +563,10 @@ npx react-native build-ios --mode=Release
 
 ```bash
 # Sauvegarde quotidienne
-mysqldump -u root -p rdvsante > backup_$(date +%Y%m%d).sql
+mysqldump -u root -p centre_sante > backup_$(date +%Y%m%d).sql
 
 # Restauration
-mysql -u root -p rdvsante < backup_20241225.sql
+mysql -u root -p centre_sante < backup_20241225.sql
 ```
 
 ### Monitoring
@@ -570,7 +603,7 @@ pm2 restart rdvsante-api
 #### Migration Base de Données
 ```bash
 # Appliquer les migrations
-mysql -u root -p rdvsante < database/migrations/v1.1.0.sql
+mysql -u root -p centre_sante < database/migrations/v1.1.0.sql
 ```
 
 ### Sécurité

@@ -43,7 +43,19 @@ npx react-native run-ios
 ```
 
 ### 4. Test rapide
-- **Admin** : superadmin@centresante.com / admin456
+- **Admin par défaut** : superadmin@centresante.com / admin456
+- **Créer un admin** : 
+```bash
+curl -X POST http://localhost:5000/api/auth/admin/create \
+  -H "Content-Type: application/json" \
+  -d '{
+    "first_name": "Admin",
+    "last_name": "System", 
+    "email": "admin@system.com",
+    "phone": "0123456789",
+    "password": "adminpassword123"
+  }'
+```
 - **Patient** : Créer un compte via l'application
 
 ## Configuration Express
@@ -53,7 +65,7 @@ npx react-native run-ios
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=votre_mot_de_passe
-DB_NAME=rdvsante
+DB_NAME=centre_sante
 JWT_SECRET=votre_secret_jwt
 JWT_EXPIRES_IN=7d
 ```

@@ -67,7 +67,7 @@ npx react-native run-android  # ou run-ios
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=votre_mot_de_passe
-DB_NAME=rdvsante
+DB_NAME=centre_sante
 JWT_SECRET=votre_secret_jwt
 JWT_EXPIRES_IN=7d
 PORT=5000
@@ -113,9 +113,12 @@ const baseURL = 'http://10.0.2.2:5000/api'; // Android
 ```
 
 #### POST /auth/login
+Connexion utilisateur
+
+**Body:**
 ```json
 {
-  "email": "jean@email.com",
+  "email": "jean.dupont@email.com",
   "password": "password123"
 }
 ```
@@ -126,6 +129,34 @@ const baseURL = 'http://10.0.2.2:5000/api'; // Android
   "success": true,
   "token": "jwt_token_here",
   "user": { "id": 1, "role": "patient" }
+}
+```
+
+#### POST /auth/admin/create
+Créer un compte administrateur
+
+**Body:**
+```json
+{
+  "first_name": "Admin",
+  "last_name": "System",
+  "email": "admin@system.com",
+  "phone": "0123456789",
+  "password": "adminpassword123"
+}
+```
+
+**Response:**
+```json
+{
+  "message": "Admin créé avec succès.",
+  "admin": {
+    "id": 2,
+    "first_name": "Admin",
+    "last_name": "System",
+    "email": "admin@system.com",
+    "role": "admin"
+  }
 }
 ```
 
@@ -233,7 +264,7 @@ npx react-native build-ios --mode=Release
 
 ### Sauvegarde BD
 ```bash
-mysqldump -u root -p rdvsante > backup_$(date +%Y%m%d).sql
+mysqldump -u root -p centre_sante > backup_$(date +%Y%m%d).sql
 ```
 
 ### Monitoring

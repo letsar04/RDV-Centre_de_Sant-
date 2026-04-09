@@ -9,7 +9,7 @@ INSERT INTO users (first_name, last_name, email, phone, password, role) VALUES
 
 -- Second Admin (mot de passe: admin456 - hashé avec bcrypt)
 INSERT INTO users (first_name, last_name, email, phone, password, role) VALUES
-('Super', 'Admin', 'admin2@centresante.com', '0699999999', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi.', 'admin');
+('Super', 'Admin', 'superadmin@centresante.com', '0699999999', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi.', 'admin');
 
 -- Patients (mot de passe: patient123 - hashé avec bcrypt)
 INSERT INTO users (first_name, last_name, email, phone, password, role) VALUES
