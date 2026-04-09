@@ -1,3 +1,8 @@
+const { validationResult } = require('express-validator');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const User = require('../models/User');
+
 // Mise à jour du profil
 exports.updateProfile = async (req, res) => {
   try {
@@ -31,27 +36,28 @@ exports.updateProfile = async (req, res) => {
 
 exports.changePassword = async (req, res) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     const { currentPassword, newPassword } = req.body;
     const userId = req.user.id;
 
-    // Récupérer l'utilisateur (avec son mot de passe actuel)
-    const userPassword = await User.findPasswordById(userId);
-    if (!userPassword) {
-      return res.status(404).json({ message: 'Utilisateur non trouvé.' });
-    }
-
-    // Vérifier l'ancien mot de passe
-    const isMatch = await bcrypt.compare(currentPassword, userPassword);
-    if (!isMatch) {
-      return res.status(400).json({ message: 'Mot de passe actuel incorrect.' });
+    // Vérifier le mot de passe actuel
+    const user = await User.findPasswordById(userId);
+    if (!user || !(await bcrypt.compare(currentPassword, user.password))) {
+      return res.status(401).json({ message: 'Mot de passe actuel incorrect.' });
     }
 
     // Hasher le nouveau mot de passe
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-    // Mettre à jour
-    await User.updatePassword(userId, hashedPassword);
+    // Mettre à jour le mot de passe
+    const updatedUser = await User.updatePassword(userId, hashedPassword);
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'Utilisateur non trouvé.' });
+    }
 
     res.json({ message: 'Mot de passe mis à jour avec succès.' });
   } catch (error) {
@@ -59,11 +65,51 @@ exports.changePassword = async (req, res) => {
     res.status(500).json({ message: 'Erreur serveur.' });
   }
 };
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const { validationResult } = require('express-validator');
-const User = require('../models/User');
-require('dotenv').config();
+
+// Créer un admin (uniquement pour développement/déploiement)
+exports.createAdmin = async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { first_name, last_name, email, phone, password } = req.body;
+
+    // Vérifier si l'email existe déjà
+    const existingUser = await User.findByEmail(email);
+    if (existingUser) {
+      return res.status(400).json({ message: 'Cet email est déjà utilisé.' });
+    }
+
+    // Hasher le mot de passe
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Créer l'admin
+    const admin = await User.create({
+      first_name,
+      last_name,
+      email,
+      phone,
+      password: hashedPassword,
+      role: 'admin'
+    });
+
+    res.status(201).json({ 
+      message: 'Admin créé avec succès.',
+      admin: {
+        id: admin.id,
+        first_name: admin.first_name,
+        last_name: admin.last_name,
+        email: admin.email,
+        role: admin.role
+      }
+    });
+  } catch (error) {
+    console.error('Erreur création admin:', error);
+    res.status(500).json({ message: 'Erreur serveur.' });
+  }
+};
 
 // Inscription
 exports.register = async (req, res) => {

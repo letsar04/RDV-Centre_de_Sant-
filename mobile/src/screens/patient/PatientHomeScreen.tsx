@@ -94,20 +94,18 @@ const PatientHomeScreen = ({ navigation }: any) => {
           <View style={styles.actionGrid}>
             <ActionCard icon="calendar-plus" title="Prendre RDV" color="#2E67F8" onPress={() => navigation.navigate('Doctors')} />
             <ActionCard icon="doctor" title="Mes Médecins" color="#FF9500" onPress={() => navigation.navigate('Doctors')} />
-            <ActionCard icon="file-document-outline" title="Ordonnances" color="#34C759" />
-            <ActionCard icon="pill" title="Traitements" color="#AF52DE" />
           </View>
         </View>
 
-        <View style={styles.promoCard}>
-          <View style={styles.promoTextContainer}>
-            <Text style={styles.promoTitle}>Téléconsultation</Text>
-            <Text style={styles.promoDesc}>Consultez votre médecin depuis chez vous</Text>
-            <TouchableOpacity style={styles.promoBtn}>
-              <Text style={styles.promoBtnText}>En savoir plus</Text>
+        <View style={styles.announcementsCard}>
+          <View style={styles.announcementsTextContainer}>
+            <Text style={styles.announcementsTitle}>Annonces Communautaires</Text>
+            <Text style={styles.announcementsDesc}>Solidarité et entraide entre patients</Text>
+            <TouchableOpacity style={styles.announcementsBtn} onPress={() => navigation.navigate('Announcements')}>
+              <Text style={styles.announcementsBtnText}>Voir les annonces</Text>
             </TouchableOpacity>
           </View>
-          <Icon name="video-medical" size={64} color="rgba(255,255,255,0.3)" style={styles.promoIcon} />
+          <Icon name="heart-pulse" size={64} color="rgba(255,255,255,0.3)" style={styles.announcementsIcon} />
         </View>
 
         <View style={styles.section}>
@@ -239,8 +237,8 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#333',
   },
-  promoCard: {
-    backgroundColor: '#2E67F8',
+  announcementsCard: {
+    backgroundColor: '#E91E63',
     borderRadius: 16,
     padding: 20,
     flexDirection: 'row',
@@ -249,34 +247,34 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     overflow: 'hidden',
   },
-  promoTextContainer: {
+  announcementsTextContainer: {
     flex: 1,
     zIndex: 2,
   },
-  promoTitle: {
+  announcementsTitle: {
     color: '#fff',
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 4,
   },
-  promoDesc: {
+  announcementsDesc: {
     color: 'rgba(255,255,255,0.8)',
     fontSize: 14,
     marginBottom: 16,
   },
-  promoBtn: {
+  announcementsBtn: {
     backgroundColor: '#fff',
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 8,
     alignSelf: 'flex-start',
   },
-  promoBtnText: {
-    color: '#2E67F8',
+  announcementsBtnText: {
+    color: '#E91E63',
     fontWeight: 'bold',
     fontSize: 13,
   },
-  promoIcon: {
+  announcementsIcon: {
     position: 'absolute',
     right: -10,
     bottom: -10,

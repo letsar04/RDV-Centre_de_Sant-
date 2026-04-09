@@ -1,3 +1,4 @@
+// Backend server for RdvSante
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
@@ -11,6 +12,7 @@ const appointmentRoutes = require('./routes/appointmentRoutes');
 const patientRoutes = require('./routes/patientRoutes');
 const availabilityRoutes = require('./routes/availabilityRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
+const announcementRoutes = require('./routes/announcementRoutes');
 
 const app = express();
 
@@ -30,7 +32,8 @@ app.get('/', (req, res) => {
       appointments: '/api/appointments',
       patients: '/api/patients',
       availabilities: '/api/availabilities',
-      notifications: '/api/notifications'
+      notifications: '/api/notifications',
+      announcements: '/api/announcements'
     }
   });
 });
@@ -42,6 +45,7 @@ app.use('/api/appointments', appointmentRoutes);
 app.use('/api/patients', patientRoutes);
 app.use('/api/availabilities', availabilityRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/announcements', announcementRoutes);
 
 // Gestion des erreurs 404
 app.use((req, res) => {

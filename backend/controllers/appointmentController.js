@@ -160,3 +160,60 @@ exports.getPatientStats = async (req, res) => {
     res.status(500).json({ message: 'Erreur serveur.' });
   }
 };
+
+// Détails d'un rendez-vous
+exports.getAppointmentById = async (req, res) => {
+  try {
+    const appointment = await Appointment.findById(req.params.id);
+    if (!appointment) {
+      return res.status(404).json({ message: 'Rendez-vous non trouvé.' });
+    }
+
+    // Vérifier que c'est bien le patient qui consulte
+    if (appointment.patient_id !== req.user.id) {
+      return res.status(403).json({ message: 'Vous ne pouvez consulter que vos propres rendez-vous.' });
+    }
+
+    res.json(appointment);
+  } catch (error) {
+    console.error('Erreur détails RDV:', error);
+    res.status(500).json({ message: 'Erreur serveur.' });
+  }
+};
+
+// Reporter un rendez-vous
+exports.reschedule = async (req, res) => {
+  try {
+    const { appointment_date, appointment_time } = req.body;
+    
+    const appointment = await Appointment.findById(req.params.id);
+    if (!appointment) {
+      return res.status(404).json({ message: 'Rendez-vous non trouvé.' });
+    }
+
+    // Vérifier que c'est bien le patient qui modifie
+    if (appointment.patient_id !== req.user.id) {
+      return res.status(403).json({ message: 'Vous ne pouvez modifier que vos propres rendez-vous.' });
+    }
+
+    if (appointment.status === 'annule') {
+      return res.status(400).json({ message: 'Impossible de reporter un rendez-vous annulé.' });
+    }
+
+    const updated = await Appointment.reschedule(req.params.id, appointment_date, appointment_time);
+
+    // Notification
+    await Notification.create({
+      user_id: req.user.id,
+      title: 'Rendez-vous reporté',
+      message: `Votre rendez-vous avec ${appointment.doctor_first_name} ${appointment.doctor_last_name} a été reporté au ${appointment_date} à ${appointment_time}.`,
+      type: 'creation',
+      appointment_id: parseInt(req.params.id)
+    });
+
+    res.json({ message: 'Rendez-vous reporté.', appointment: updated });
+  } catch (error) {
+    console.error('Erreur report RDV:', error);
+    res.status(500).json({ message: 'Erreur serveur.' });
+  }
+};

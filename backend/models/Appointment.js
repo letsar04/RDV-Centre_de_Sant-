@@ -63,6 +63,14 @@ class Appointment {
     return this.updateStatus(id, 'annule');
   }
 
+  static async reschedule(id, appointment_date, appointment_time) {
+    await pool.query(
+      'UPDATE appointments SET appointment_date = ?, appointment_time = ?, status = \'en_attente\' WHERE id = ?',
+      [appointment_date, appointment_time, id]
+    );
+    return this.findById(id);
+  }
+
   static async getStats() {
     const [total] = await pool.query('SELECT COUNT(*) as count FROM appointments');
     const [enAttente] = await pool.query("SELECT COUNT(*) as count FROM appointments WHERE status = 'en_attente'");

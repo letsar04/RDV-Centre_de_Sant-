@@ -85,11 +85,26 @@ const AppointmentsScreen = ({ navigation }: any) => {
       </View>
 
       <View style={styles.cardFooter}>
-        <TouchableOpacity style={styles.detailsBtn}>
+        <TouchableOpacity 
+          style={styles.detailsBtn}
+          onPress={() => navigation.navigate('AppointmentDetail', { appointmentId: item.id })}
+        >
           <Text style={styles.detailsBtnText}>Détails</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.rescheduleBtn}>
-          <Text style={styles.rescheduleBtnText}>Reporter</Text>
+        <TouchableOpacity 
+          style={[
+            styles.rescheduleBtn,
+            (item.status.toLowerCase() === 'annulé' || item.status.toLowerCase() === 'cancelled') && styles.disabledBtn
+          ]}
+          onPress={() => navigation.navigate('RescheduleAppointment', { appointmentId: item.id })}
+          disabled={item.status.toLowerCase() === 'annulé' || item.status.toLowerCase() === 'cancelled'}
+        >
+          <Text style={[
+            styles.rescheduleBtnText,
+            (item.status.toLowerCase() === 'annulé' || item.status.toLowerCase() === 'cancelled') && styles.disabledBtnText
+          ]}>
+            Reporter
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -268,6 +283,13 @@ const styles = StyleSheet.create({
   bookBtnText: {
     color: 'white',
     fontWeight: 'bold',
+  },
+  disabledBtn: {
+    backgroundColor: '#f5f5f5',
+    opacity: 0.5,
+  },
+  disabledBtnText: {
+    color: '#999',
   },
 });
 

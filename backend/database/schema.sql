@@ -1,6 +1,5 @@
--- =============================================
+
 -- Centre de Santé - Schéma de la base de données
--- =============================================
 
 CREATE DATABASE IF NOT EXISTS centre_sante;
 USE centre_sante;
@@ -68,4 +67,26 @@ CREATE TABLE IF NOT EXISTS notifications (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (appointment_id) REFERENCES appointments(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Table des annonces communautaires
+CREATE TABLE IF NOT EXISTS announcements (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  description TEXT NOT NULL,
+  type ENUM('blood_donation', 'patient_search', 'other') NOT NULL,
+  author VARCHAR(255) NOT NULL,
+  author_email VARCHAR(255) NOT NULL,
+  location VARCHAR(255),
+  blood_type VARCHAR(5),
+  urgency ENUM('low', 'medium', 'high') NOT NULL DEFAULT 'medium',
+  contact VARCHAR(255) NOT NULL,
+  admin_id INT NOT NULL,
+  status ENUM('active', 'inactive', 'deleted') NOT NULL DEFAULT 'active',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (admin_id) REFERENCES users(id) ON DELETE CASCADE,
+  INDEX idx_type (type),
+  INDEX idx_status (status),
+  INDEX idx_created_at (created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

@@ -82,3 +82,19 @@ exports.delete = async (req, res) => {
     res.status(500).json({ message: 'Erreur serveur.' });
   }
 };
+
+// Disponibilités d'un médecin
+exports.getAvailabilities = async (req, res) => {
+  try {
+    const doctor = await Doctor.findById(req.params.id);
+    if (!doctor) {
+      return res.status(404).json({ message: 'Médecin non trouvé.' });
+    }
+
+    const availabilities = await Availability.findByDoctor(req.params.id);
+    res.json(availabilities);
+  } catch (error) {
+    console.error('Erreur disponibilités médecin:', error);
+    res.status(500).json({ message: 'Erreur serveur.' });
+  }
+};

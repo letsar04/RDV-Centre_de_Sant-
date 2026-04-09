@@ -9,10 +9,14 @@ import ChangePasswordScreen from '../screens/profile/ChangePasswordScreen';
 
 import DoctorsScreen from '../screens/patient/DoctorsScreen';
 import DoctorDetailScreen from '../screens/patient/DoctorDetailScreen';
+import AppointmentDetailScreen from '../screens/patient/AppointmentDetailScreen';
+import RescheduleAppointmentScreen from '../screens/patient/RescheduleAppointmentScreen';
+import AnnouncementsScreen from '../screens/patient/AnnouncementsScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 
 const Tab = createBottomTabNavigator();
 const HomeStackNav = createStackNavigator();
+const AppointmentsStackNav = createStackNavigator();
 
 function HomeStack() {
   return (
@@ -20,7 +24,20 @@ function HomeStack() {
       <HomeStackNav.Screen name="HomeMain" component={PatientHomeScreen} options={{ title: 'Accueil' }} />
       <HomeStackNav.Screen name="Doctors" component={DoctorsScreen} options={{ title: 'Médecins' }} />
       <HomeStackNav.Screen name="DoctorDetail" component={DoctorDetailScreen} options={{ title: 'Détail Médecin' }} />
+      <HomeStackNav.Screen name="AppointmentDetail" component={AppointmentDetailScreen} options={{ title: 'Détails du rendez-vous' }} />
+      <HomeStackNav.Screen name="RescheduleAppointment" component={RescheduleAppointmentScreen} options={{ title: 'Reporter le rendez-vous' }} />
+      <HomeStackNav.Screen name="Announcements" component={AnnouncementsScreen} options={{ title: 'Annonces Communautaires' }} />
     </HomeStackNav.Navigator>
+  );
+}
+
+function AppointmentsStack() {
+  return (
+    <AppointmentsStackNav.Navigator screenOptions={{ headerShown: true }}>
+      <AppointmentsStackNav.Screen name="AppointmentsMain" component={AppointmentsScreen} options={{ title: 'Mes Rendez-vous' }} />
+      <AppointmentsStackNav.Screen name="AppointmentDetail" component={AppointmentDetailScreen} options={{ title: 'Détails du rendez-vous' }} />
+      <AppointmentsStackNav.Screen name="RescheduleAppointment" component={RescheduleAppointmentScreen} options={{ title: 'Reporter le rendez-vous' }} />
+    </AppointmentsStackNav.Navigator>
   );
 }
 
@@ -61,7 +78,7 @@ const PatientNavigator = () => {
       })}
     >
       <Tab.Screen name="Home" component={HomeStack} options={{ title: 'Accueil' }} />
-      <Tab.Screen name="RDVs" component={AppointmentsScreen} options={{ title: 'Mes Rendez-vous' }} />
+      <Tab.Screen name="RDVs" component={AppointmentsStack} options={{ title: 'Mes Rendez-vous' }} />
       <Tab.Screen name="Profil" component={ProfileStackScreen} options={{ title: 'Profil' }} />
     </Tab.Navigator>
   );

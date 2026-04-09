@@ -1,12 +1,15 @@
--- =============================================
--- Centre de Santé - Données de test (Seed)
--- =============================================
+
+-- Centre de Santé - Données de test 
 
 USE centre_sante;
 
 -- Admin (mot de passe: admin123 - hashé avec bcrypt)
 INSERT INTO users (first_name, last_name, email, phone, password, role) VALUES
 ('Admin', 'Principal', 'admin@centresante.com', '0600000000', '$2a$10$Uj5E6/Sj6G1oY5OL63VD3OjsQumkgeF3Nvtnqf6sO9sf3Wp3TfEyK', 'admin');
+
+-- Second Admin (mot de passe: admin456 - hashé avec bcrypt)
+INSERT INTO users (first_name, last_name, email, phone, password, role) VALUES
+('Super', 'Admin', 'admin2@centresante.com', '0699999999', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi.', 'admin');
 
 -- Patients (mot de passe: patient123 - hashé avec bcrypt)
 INSERT INTO users (first_name, last_name, email, phone, password, role) VALUES

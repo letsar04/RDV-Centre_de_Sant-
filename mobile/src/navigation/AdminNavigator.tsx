@@ -7,6 +7,7 @@ import AdminHomeScreen from '../screens/admin/AdminHomeScreen';
 import ManageDoctorsScreen from '../screens/admin/ManageDoctorsScreen';
 import ManageAvailabilitiesScreen from '../screens/admin/ManageAvailabilitiesScreen';
 import AdminAppointmentsScreen from '../screens/admin/AdminAppointmentsScreen';
+import ManageAnnouncementsScreen from '../screens/admin/ManageAnnouncementsScreen';
 import ProfileScreen from '../screens/patient/ProfileScreen';
 import EditProfileScreen from '../screens/patient/EditProfileScreen';
 import ChangePasswordScreen from '../screens/profile/ChangePasswordScreen';
@@ -20,6 +21,14 @@ function DoctorsStack() {
     <AdminStack.Navigator screenOptions={{ headerShown: true }}>
       <AdminStack.Screen name="DoctorsList" component={ManageDoctorsScreen} options={{ title: 'Gestion Médecins' }} />
       <AdminStack.Screen name="ManageAvailabilities" component={ManageAvailabilitiesScreen} options={{ title: 'Disponibilités' }} />
+    </AdminStack.Navigator>
+  );
+}
+
+function AnnouncementsStack() {
+  return (
+    <AdminStack.Navigator screenOptions={{ headerShown: true }}>
+      <AdminStack.Screen name="AnnouncementsMain" component={ManageAnnouncementsScreen} options={{ title: 'Annonces' }} />
     </AdminStack.Navigator>
   );
 }
@@ -44,6 +53,8 @@ const AdminNavigator = () => {
             iconName = focused ? 'view-dashboard' : 'view-dashboard-outline';
           } else if (route.name === 'Gestion') {
             iconName = focused ? 'doctor' : 'doctor';
+          } else if (route.name === 'Annonces') {
+            iconName = focused ? 'bullhorn' : 'bullhorn-outline';
           } else if (route.name === 'RDVs') {
             iconName = focused ? 'calendar-multiple-check' : 'calendar-multiple';
           } else if (route.name === 'Profil') {
@@ -62,6 +73,7 @@ const AdminNavigator = () => {
     >
       <Tab.Screen name="TableauD" component={AdminHomeScreen} options={{ title: 'Dashboard' }} />
       <Tab.Screen name="Gestion" component={DoctorsStack} options={{ title: 'Médecins' }} />
+      <Tab.Screen name="Annonces" component={AnnouncementsStack} options={{ title: 'Annonces' }} />
       <Tab.Screen name="RDVs" component={AdminAppointmentsScreen} options={{ title: 'Réservations' }} />
       <Tab.Screen name="Profil" component={ProfileStackScreen} options={{ title: 'Session' }} />
     </Tab.Navigator>

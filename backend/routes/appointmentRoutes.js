@@ -30,4 +30,13 @@ router.put('/:id/status', auth, adminAuth, appointmentController.updateStatus);
 // PUT /api/appointments/:id/cancel (Patient)
 router.put('/:id/cancel', auth, appointmentController.cancel);
 
+// GET /api/appointments/:id (Patient - détails)
+router.get('/:id', auth, appointmentController.getAppointmentById);
+
+// PUT /api/appointments/:id/reschedule (Patient - reporter)
+router.put('/:id/reschedule', auth, [
+  body('appointment_date').isDate().withMessage('Date invalide.'),
+  body('appointment_time').notEmpty().withMessage('L\'heure est requise.')
+], appointmentController.reschedule);
+
 module.exports = router;

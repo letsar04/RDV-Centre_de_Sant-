@@ -29,10 +29,19 @@ router.put('/profile', auth, [
   body('phone').notEmpty().withMessage('Le téléphone est requis.'),
 ], authController.updateProfile);
 
-// PUT /api/auth/password
+// PUT /api/auth/password (changement mot de passe)
 router.put('/password', auth, [
   body('currentPassword').notEmpty().withMessage('Le mot de passe actuel est requis.'),
   body('newPassword').isLength({ min: 6 }).withMessage('Le nouveau mot de passe doit contenir au moins 6 caractères.')
 ], authController.changePassword);
+
+// POST /api/auth/admin/create (création admin - développement uniquement)
+router.post('/admin/create', [
+  body('first_name').notEmpty().withMessage('Le prénom est requis.'),
+  body('last_name').notEmpty().withMessage('Le nom est requis.'),
+  body('email').isEmail().withMessage('Email invalide.'),
+  body('phone').notEmpty().withMessage('Le téléphone est requis.'),
+  body('password').isLength({ min: 6 }).withMessage('Le mot de passe doit contenir au moins 6 caractères.')
+], authController.createAdmin);
 
 module.exports = router;

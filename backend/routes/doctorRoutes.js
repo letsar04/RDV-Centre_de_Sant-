@@ -11,6 +11,9 @@ router.get('/', auth, doctorController.getAll);
 // GET /api/doctors/:id
 router.get('/:id', auth, doctorController.getById);
 
+// GET /api/doctors/:id/availabilities
+router.get('/:id/availabilities', auth, doctorController.getAvailabilities);
+
 // POST /api/doctors (Admin)
 router.post('/', auth, adminAuth, [
   body('first_name').notEmpty().withMessage('Le prénom est requis.'),
